@@ -27,6 +27,12 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
+    - name: Debug
+      run: |
+       echo "Current Directory: $(pwd)"
+       echo "Contents of Directory:"
+       ls -la
+
     - name: Build with Maven
       run: mvn clean install
 
