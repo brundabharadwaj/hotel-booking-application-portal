@@ -1,0 +1,18 @@
+name: Auto Add Reviewers
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+jobs:
+  add_reviewers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Add reviewers
+        run: |
+          # Retrieve the PR number
+          PR_NUMBER=$(jq -r ".pull_request.number" "$GITHUB_EVENT_PATH")
+          # Add reviewers to the PR
+          gh pr request-reviewers "$PR_NUMBER" --reviewer brundabharadwaj 
