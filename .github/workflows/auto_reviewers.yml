@@ -1,9 +1,8 @@
 name: Auto Add Reviewers
 on:
-  pull_request:
+  pull_request_review:
     types:
-      - opened
-      - synchronize
+      - created
 jobs:
   add_reviewers:
     runs-on: ubuntu-latest
@@ -12,13 +11,22 @@ jobs:
         uses: actions/checkout@v2
       - name: Add reviewers
         run: |
-          # Retrieve the PR number
+          # Retrieve the pull request number
           PR_NUMBER=$(jq -r ".pull_request.number" "$GITHUB_EVENT_PATH")
-          # Add reviewers to the PR using the GitHub API
-          curl -X POST \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers" \
-            -d '{
-              "reviewers": ["brundabharadwaj"]
-            }'
+          # Get the current reviewers
+          REVIEWERS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers" | \
+            jq -r ".[] | .login")
+          # Add new reviewers
+          NEW_REVIEWERS="brundabharadwaj"
+          for reviewer in $NEW_REVIEWERS; do
+            # Check if the reviewer is already assigned
+            if [[ $REVIEWERS != *"$reviewer"* ]]; then
+              # Add the reviewer using the GitHub API
+              curl -X POST \
+                -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+                -H "Accept: application/vnd.github.v3+json" \
+                "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers" \
+                -d "{\"reviewers\": [\"$reviewer\"]}"
+            fi
+          done
