@@ -20,7 +20,7 @@ const Button = ({
         onClick={handleChange}
         id={id}
         type="submit"
-        className={`rounded-md relative block px-3 py-2 border text-gray-900 font-medium hover:text-gray-100 focus:outline-none focus:z-10 sm:text-sm ${disabled ? `bg-zinc-400 hover:bg-zinc-400 cursor-not-allowed hover:text-gray-900` : `bg-blue-400 hover:bg-blue-800 cursor-pointer`} ` + customClass}
+        className={`relative block px-3 py-2 border text-gray-900 font-medium hover:text-gray-100 focus:outline-none focus:z-10 sm:text-sm ${disabled ? `bg-zinc-400 hover:bg-zinc-400 cursor-not-allowed hover:text-gray-900` : `bg-blue-400 hover:bg-blue-800 cursor-pointer`} ` + customClass}
       >
         {labelText}
       </button>

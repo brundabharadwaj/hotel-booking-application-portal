@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
+import { useAppDispatch } from "../../redux/hooks";
+import { setSearchRooms } from "../../redux/search";
 
 const navigations = [
   { title: "Home", linkTo: "/" },
@@ -9,6 +13,49 @@ const navigations = [
 ];
 
 const Home = () => {
+  const dispatch = useAppDispatch();
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const day = String(today.getDate()).padStart(2, "0");
+
+  const formattedDate = `${year}-${month}-${day}`;
+
+  const roomsArray = [
+    { title: "1", value: 1 },
+    { title: "2", value: 2 },
+    { title: "3", value: 3 },
+  ]
+  const adultsArray = [
+    { title: "1", value: 1 },
+    { title: "2", value: 2 },
+    { title: "3", value: 3 },
+  ]
+  const childrenArray = [
+    { title: "1", value: 1 },
+    { title: "2", value: 2 },
+    { title: "3", value: 3 },
+  ]
+
+  const [checkIn, setCheckIn] = useState(formattedDate);
+  const [checkOut, setCheckOut] = useState(formattedDate);
+  const [rooms, setRooms] = useState(roomsArray[0].value);
+  const [adults, setAdults] = useState(adultsArray[0].value);
+  const [children, setChildren] = useState(childrenArray[0].value);
+
+  const searchRooms = () => {
+    const data = {
+      checkIn: checkIn || "",
+      checkOut: checkOut || "",
+      rooms: rooms || 0,
+      adults: adults || 0,
+      children: children || 0,
+    };
+    dispatch(setSearchRooms(data));
+
+    console.log(data);
+  };
+
   return (
     <div>
       {/* Image */}
@@ -77,7 +124,7 @@ const Home = () => {
         </div>
 
         {/* Header 2 - Logo & Menus */}
-        <div className="absolute inset-0 m-10 ml-20 mt-24">
+        <div className="absolute inset-0 m-10 ml-20 mt-24 z-10 h-min">
           <div className="flex flex-row justify-between w-full">
             <img
               className="w-52"
@@ -88,10 +135,11 @@ const Home = () => {
               <div className="mt-4">
                 {navigations.map((item) => {
                   return (
-                    <div className="relative inline-block">
+                    <div key={item.title} className="relative inline-block">
                       <span className="font-Jost font-semibold text-lg hover:font-bold text-white mx-4 group relative cursor-pointer uppercase pb-2">
                         {item.title}
-                        <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-white transform translate-x-0 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>                      </span>
+                        <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-white transform translate-x-0 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                      </span>
                     </div>
                   );
                 })}
@@ -105,8 +153,97 @@ const Home = () => {
 
         {/* Book your vacation */}
         <div className="absolute inset-0 flex flex-col items-center justify-center -z-10">
-          <div className="font-Allison text-white text-9xl font-bold transform -skew-y-3">Book Your Vacation</div>
-          <div className="mt-6 font-Jost text-white text-lg font-extralight">Explore new experience with Hotel!</div>
+          <div className="font-Allison text-white text-9xl font-bold transform -skew-y-3">
+            Book Your Vacation
+          </div>
+          <div className="mt-6 font-Jost text-white text-lg font-extralight">
+            Explore new experience with Hotel!
+          </div>
+        </div>
+
+        {/* Rooms Availability Search */}
+        <div className="absolute inset-0 flex flex-col items-center justify-end mb-40">
+          <div className="flex flex-row space-x-8">
+            {/* Check In */}
+            <Input
+              handleChange={(e: any) => setCheckIn(e.target.value)}
+              value={checkIn}
+              labelText={"Check In"}
+              labelFor={"Check In"}
+              id={"checkIn"}
+              name={"checkIn"}
+              type={"date"}
+              isRequired={false}
+              placeholder={"Select Check In"}
+              customClass={"w-40"}
+            />
+            {/* Check Out */}
+            <Input
+              handleChange={(e: any) => setCheckOut(e.target.value)}
+              value={checkOut}
+              labelText={"Check Out"}
+              labelFor={"Check Out"}
+              id={"checkOut"}
+              name={"checkOut"}
+              type={"date"}
+              isRequired={false}
+              placeholder={"Select Check Out"}
+              customClass={"w-40"}
+            />
+            {/* Rooms */}
+            <Input
+              handleChange={(e: any) => setRooms(e.target.value)}
+              value={rooms}
+              labelText={"Rooms"}
+              labelFor={"Rooms"}
+              id={"rooms"}
+              name={"rooms"}
+              type={"dropdown"}
+              dropdownData={roomsArray}
+              isRequired={false}
+              placeholder={"Select Number of Rooms"}
+              customClass={"w-20 h-12"}
+            />
+            {/* Check In */}
+            <Input
+              handleChange={(e: any) => setAdults(e.target.value)}
+              value={adults}
+              labelText={"Adults"}
+              labelFor={"Adults"}
+              id={"Adults"}
+              name={"Adults"}
+              type={"dropdown"}
+              dropdownData={adultsArray}
+              isRequired={false}
+              placeholder={"Select Number of Adults"}
+              customClass={"w-20 h-12"}
+            />
+            {/* Check In */}
+            <Input
+              handleChange={(e: any) => setChildren(e.target.value)}
+              value={children}
+              labelText={"Children"}
+              labelFor={"Children"}
+              id={"Children"}
+              name={"Children"}
+              type={"dropdown"}
+              dropdownData={childrenArray}
+              isRequired={false}
+              placeholder={"Select Number of Children"}
+              customClass={"w-20 h-12"}
+            />
+
+            {/* Search Button */}
+            <Button
+              handleChange={searchRooms}
+              labelText={"Search Room"}
+              id={"searchRoom"}
+              customClass={
+                "mt-5 h-12 w-40 bg-transparent text-white font-Jost font-semibold text-3xl border-2 hover:bg-transparent hover:font-bold hover:underline"
+              }
+              disabled={false}
+            />
+          </div>
         </div>
       </div>
     </div>
