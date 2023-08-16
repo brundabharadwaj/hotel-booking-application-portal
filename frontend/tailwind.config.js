@@ -5,9 +5,11 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      'Montserrat': ['Montserrat']
+      'Allison': ['Allison'],
+      'Jost': ['Jost']
     },
     extend: {
+      display: ['responsive'],
       screens: {
         'xs': '300px'
       },

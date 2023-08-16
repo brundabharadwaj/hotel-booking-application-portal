@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
 
 const PageNotFound = () => {
-  const PageNotFoundPng = require("../../assets/images/NotFound.png");
+  const PageNotFoundPng = require("../../assets/NotFound.png");
 
   const [backgroundColor, setBackgroundColor] = useState(false);
 
