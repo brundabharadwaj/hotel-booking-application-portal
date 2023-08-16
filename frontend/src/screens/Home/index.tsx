@@ -1,16 +1,24 @@
 import React from "react";
 
+const navigations = [
+  { title: "Home", linkTo: "/" },
+  { title: "Pages", linkTo: "/" },
+  { title: "Rooms", linkTo: "/" },
+  { title: "Reservations", linkTo: "/" },
+  { title: "Contact", linkTo: "/" },
+];
+
 const Home = () => {
   return (
     <div>
       {/* Image */}
       <div className="flex items-center justify-center h-screen">
         <img
-          className="w-full h-full"
+          className="w-full h-full object-cover -z-20"
           src={require("../../assets/background.png")}
           alt="Background"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-transparent to-black opacity-90"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-transparent -z-10 to-black opacity-90"></div>
 
         {/* Header 1 - Contact & Login */}
         <div className="absolute inset-0">
@@ -58,13 +66,9 @@ const Home = () => {
             </div>
 
             {/* Login / Signup */}
-            <div className="flex flex-row pr-10">
-              <span className="ml-4 font-Jost font-bold text-white">
-                Login
-              </span>
-              <span className="ml-4 font-Jost font-bold text-white">
-                |
-              </span>
+            <div className="flex flex-row">
+              <span className="ml-4 font-Jost font-bold text-white">Login</span>
+              <span className="ml-4 font-Jost font-bold text-white">|</span>
               <span className="ml-4 font-Jost font-bold text-white">
                 Sign Up
               </span>
@@ -74,9 +78,35 @@ const Home = () => {
 
         {/* Header 2 - Logo & Menus */}
         <div className="absolute inset-0 m-10 ml-20 mt-24">
-          <div>
-            <img className="w-40" src={require("../../assets/logo.png")} alt="Hotel"/>
+          <div className="flex flex-row justify-between w-full">
+            <img
+              className="w-52"
+              src={require("../../assets/logo.png")}
+              alt="Hotel"
+            />
+            <div className="flex flex-row h-8 justify-between align-middle text-center">
+              <div className="mt-4">
+                {navigations.map((item) => {
+                  return (
+                    <div className="relative inline-block">
+                      <span className="font-Jost font-semibold text-lg hover:font-bold text-white mx-4 group relative cursor-pointer uppercase pb-2">
+                        {item.title}
+                        <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-white transform translate-x-0 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="border-2 text-white font-semibold border-white p-3 uppercase cursor-pointer">
+              Book Now
+            </div>
           </div>
+        </div>
+
+        {/* Book your vacation */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center -z-10">
+          <div className="font-Allison text-white text-9xl font-bold transform -skew-y-3">Book Your Vacation</div>
+          <div className="mt-6 font-Jost text-white text-lg font-extralight">Explore new experience with Hotel!</div>
         </div>
       </div>
     </div>
